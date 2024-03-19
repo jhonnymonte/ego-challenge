@@ -19,7 +19,7 @@ class VehiculoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vehiculo
-        fields = ['modelo', 'marca', 'precio', 'imagen', 'tipo_vehiculo', 'colores', 'ficha_tecnica', 'especificaciones', 'caracteristicas']
+        fields = ['modelo', 'marca', 'precio', 'imagen', 'tipo_vehiculo', 'colores', 'ficha_tecnica', 'caracteristicas']
 
     def get_colores(self, obj):
         return [color.nombre for color in obj.colores.all()]
