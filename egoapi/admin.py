@@ -1,17 +1,14 @@
 from django.contrib import admin
-from .models import Caracteristica, Color, Vehiculo
+from .models import Especificaciones, Color, Vehiculo
 
-
-
-
-
-# Register your models here.
-
-admin.site.register(Caracteristica)
-admin.site.register(Color)
+class ModeloConTextoImagenAdmin(admin.ModelAdmin):
+    list_display = ['texto', 'imagen']
 
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
     list_display = ['modelo', 'marca', 'año', 'precio', 'tipo_vehiculo']
-    filter_horizontal = ['caracteristicas', 'colores']
-    search_fields = ['modelo', 'marca'] 
+    filter_horizontal = ['colores']
+    search_fields = ['modelo', 'marca']
+
+admin.site.register(Especificaciones, ModeloConTextoImagenAdmin)
+admin.site.register(Color)
