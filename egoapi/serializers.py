@@ -1,11 +1,11 @@
 from django.db import models
 from rest_framework import serializers
-from .models import Vehiculo, Especificaciones, Color
+from .models import Vehicle, Specifications, Color
 
-class EspecificacionesSerializer(serializers.ModelSerializer):
+class SpecificationsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Especificaciones
-        fields = ('id', 'texto', 'imagen')
+        model = Specifications
+        fields = ('id', 'text', 'image')
 
 
 class ColorSerializer(serializers.ModelSerializer):
@@ -13,43 +13,45 @@ class ColorSerializer(serializers.ModelSerializer):
         model = Color
         fields = '__all__'
 
-class VehiculoSerializer(serializers.ModelSerializer):
-    colores = serializers.SerializerMethodField()
-    caracteristicas = serializers.SerializerMethodField()
+
+
+class VehicleSerializer(serializers.ModelSerializer):
+    colors = serializers.SerializerMethodField()
+    characteristics = serializers.SerializerMethodField()
 
     class Meta:
-        model = Vehiculo
-        fields = ['modelo', 'marca', 'precio', 'imagen', 'tipo_vehiculo', 'colores', 'ficha_tecnica', 'caracteristicas']
+        model = Vehicle
+        fields = ['model', 'brand', 'price', 'image', 'vehicle_type', 'colors', 'technical_sheet', 'characteristics']
 
-    def get_colores(self, obj):
-        return [color.nombre for color in obj.colores.all()]
+    def get_colors(self, obj):
+        return [color.name for color in obj.colors.all()]
 
-    def get_caracteristicas(self, obj):
-        caracteristicas = []
-        for especificacion in obj.especificaciones.all():
-            caracteristica_data = {
-                'texto': especificacion.texto,
-                'imagen': especificacion.imagen.url if especificacion.imagen else None
+    def get_characteristics(self, obj):
+        characteristics = []
+        for specification in obj.specifications.all():
+            characteristic_data = {
+                'text': specification.text,
+                'image': specification.image.url if specification.image else None
             }
-            caracteristicas.append(caracteristica_data)
-        return caracteristicas
+            characteristics.append(characteristic_data)
+        return characteristics
 
     def create(self, validated_data):
-        caracteristicas_data = validated_data.pop('caracteristicas', [])
-        colores_data = validated_data.pop('colores', [])
-        vehiculo = Vehiculo.objects.create(**validated_data)
+        characteristics_data = validated_data.pop('characteristics', [])
+        colors_data = validated_data.pop('colors', [])
+        vehicle = Vehicle.objects.create(**validated_data)
 
-        for caracteristica_data in caracteristicas_data:
-            caracteristica_texto = caracteristica_data.pop('texto')
-            caracteristica_imagen = caracteristica_data.pop('imagen', None)
-            caracteristica, _ = Especificaciones.objects.get_or_create(texto=caracteristica_texto)
-            if caracteristica_imagen:
-                caracteristica.imagen = caracteristica_imagen
-                caracteristica.save()
-            vehiculo.especificaciones.add(caracteristica)
+        for characteristic_data in characteristics_data:
+            characteristic_text = characteristic_data.pop('text')
+            characteristic_image = characteristic_data.pop('image', None)
+            characteristic, _ = Specifications.objects.get_or_create(text=characteristic_text)
+            if characteristic_image:
+                characteristic.image = characteristic_image
+                characteristic.save()
+            vehicle.specifications.add(characteristic)
 
-        for color_nombre in colores_data:
-            color, _ = Color.objects.get_or_create(nombre=color_nombre)
-            vehiculo.colores.add(color)
+        for color_name in colors_data:
+            color, _ = Color.objects.get_or_create(name=color_name)
+            vehicle.colors.add(color)
 
-        return vehiculo
+        return vehicle

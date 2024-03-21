@@ -1,24 +1,15 @@
-
-
-from django.urls import path, include
-from django.contrib import admin
-from rest_framework import routers
+from django.urls import path
 from egoapi import views
 
-
-
 urlpatterns = [
-    path('crear_vehiculo/', views.CrearVehiculo.as_view(), name='crear_vehiculo'),
-    path('vehiculos/', views.ListarVehiculos.as_view(), name='listar_vehiculos'),
-    path('vehiculos/<int:pk>/', views.DetalleVehiculo.as_view(), name='detalle_vehiculo'),
-    path('vehiculos/<int:pk>/actualizar/', views.ActualizarVehiculo.as_view(), name='actualizar_vehiculo'),
-    path('vehiculos/<int:pk>/eliminar/', views.EliminarVehiculo.as_view(), name='eliminar_vehiculo'),
-    path('vehiculos/por_anio/<int:año>/', views.FiltrarVehiculosPorAño.as_view(), name='filtrar_vehiculos_por_anio'),
-    path('vehiculos/por_precio/<str:precio>/', views.FiltrarVehiculosPorPrecio.as_view(), name='filtrar_vehiculos_por_precio'),
-    path('vehiculos/por_tipo/<str:tipo_vehiculo>/', views.FiltrarVehiculosPorTipo.as_view(), name='filtrar_vehiculos_por_tipo'),
-    path('vehiculos/por_anio/<int:min_año>/<int:max_año>/', views.FiltrarVehiculosPorAñoDinamico.as_view(), name='filtrar_vehiculos_por_anio'),
-    path('vehiculos/por_precio/<str:min_precio>/<str:max_precio>/', views.FiltrarVehiculosPorPrecioDinamico.as_view(), name='filtrar_vehiculos_por_precio'),
+    path('create_vehicle/', views.CreateVehicle.as_view(), name='create_vehicle'),
+    path('vehicles/', views.ListVehicles.as_view(), name='list_vehicles'),
+    path('vehicles/<int:pk>/', views.VehicleDetail.as_view(), name='vehicle_detail'),
+    path('vehicles/<int:pk>/update/', views.UpdateVehicle.as_view(), name='update_vehicle'),
+    path('vehicles/<int:pk>/delete/', views.DeleteVehicle.as_view(), name='delete_vehicle'),
+    path('vehicles/by_year/<int:year>/', views.FilterVehiclesByYear.as_view(), name='filter_vehicles_by_year'),
+    path('vehicles/by_price/<str:price>/', views.FilterVehiclesByPrice.as_view(), name='filter_vehicles_by_price'),
+    path('vehicles/by_type/<str:vehicle_type>/', views.FilterVehiclesByType.as_view(), name='filter_vehicles_by_type'),
+    path('vehicles/by_year/<int:min_year>/<int:max_year>/', views.FilterVehiclesByDynamicYear.as_view(), name='filter_vehicles_by_dynamic_year'),
+    path('vehicles/by_price/<str:min_price>/<str:max_price>/', views.FilterVehiclesByDynamicPrice.as_view(), name='filter_vehicles_by_dynamic_price'),
 ]
-
-
-

@@ -1,40 +1,40 @@
 from django.db import models
 
-class Especificaciones(models.Model):
-    texto = models.CharField(max_length=255)
-    imagen = models.ImageField(upload_to='caracteristicas/')
+class Specifications(models.Model):
+    text = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='characteristics/',null=True)
 
     def __str__(self):
-        return self.texto
+        return self.text
 
 class Color(models.Model):
-    nombre = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.nombre
+        return self.name
 
 
 CHOICES = [
     ('auto', 'Auto'),
     ('pickup', 'Pickup'),
-    ('comercial', 'Comercial'),
+    ('commercial', 'Commercial'),
     ('suv', 'SUV'),
     ('crossover', 'Crossover'),
 ]
 
-class Vehiculo(models.Model):
-    modelo = models.CharField(max_length=255)
-    marca = models.CharField(max_length=255)
-    año = models.IntegerField()
-    precio = models.DecimalField(max_digits=15, decimal_places=2)
-    especificaciones = models.ManyToManyField(Especificaciones)
-    colores = models.ManyToManyField(Color)
-    imagen = models.ImageField(upload_to='vehiculos/')
-    ficha_tecnica = models.FileField(upload_to='fichas_tecnicas/')
-    tipo_vehiculo = models.CharField(
+class Vehicle(models.Model):
+    model = models.CharField(max_length=255)
+    brand = models.CharField(max_length=255)
+    year = models.IntegerField()
+    price = models.DecimalField(max_digits=15, decimal_places=2)
+    specifications = models.ManyToManyField(Specifications)
+    colors = models.ManyToManyField(Color)
+    image = models.ImageField(upload_to='vehicles/')
+    technical_sheet = models.FileField(upload_to='technical_sheets/')
+    vehicle_type = models.CharField(
         max_length=20,
         choices=CHOICES
     )
 
     def __str__(self):
-        return f"{self.modelo} - {self.marca}"
+        return f"{self.model} - {self.brand}"
